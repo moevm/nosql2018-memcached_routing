@@ -1,0 +1,16 @@
+.button {
+    background-color: #eeeeee;
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5%;
+}
+
+.black {
+    background-color: #3c3c3c;
+    color: white;
+}

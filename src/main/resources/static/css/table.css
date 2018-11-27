@@ -1,0 +1,15 @@
+table {
+    margin-top: 5%;
+    width: 80%;
+    height: 100%;
+}
+
+td {
+    text-align: center;
+}
+
+table, tr, td, th {
+    border: none;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}

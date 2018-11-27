@@ -11,8 +11,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MainController {
 
     @GetMapping("/")
-    @ResponseBody
-    String startExample(){
-        return MemcachedExample.startExample();
+    String getMainPage(){
+        return "main_page";
+    }
+
+    @GetMapping("/about")
+    String getAboutPage(){
+        return "about";
+    }
+
+    @GetMapping("/connect")
+    String getConnectPage(){
+        return "connect";
     }
 }

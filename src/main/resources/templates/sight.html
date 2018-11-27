@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/map.css}"/>
+    <title>Main Page</title>
+    <script th:src="@{/js/map.js}"></script>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+
+    </style>
+</head>
+<body>
+
+<div th:include="navbar :: navbar"></div>
+
+<h1>Наименование объекта</h1>
+<h2>Наименование ансамбля</h2>
+<h3>Значимые даты</h3>
+<h3>Авторы</h3>
+
+<div id="map"></div>
+
+<strong>Расположение относительно других достопримечательностей</strong>
+<br>
+<strong>Самая далекая:</strong>
+<br>
+<strong>Самая дальняя:</strong>
+
+<div th:include="footer :: footer" class="footer"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJydNcZLAW8dNas-usp7NaJO8dPJ801V8&callback=initMap"
+        async defer></script>
+</body>
+</html>
