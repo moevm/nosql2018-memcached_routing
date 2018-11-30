@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/map.css}"/>
+    <script src="https://api-maps.yandex.ru/1.0/?lang=ru_RU&amp;apikey=AMLJ_lsBAAAAC2ejVwIApEBHvhgG1q4bJIh7KkDJvyRoxksAAAAAAAAAAAAF8Zg4EjShg3snD9P2sjulTvDucQ==" type="text/javascript"></script>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="addresses" th:text="${addresses}"></div>
+
+<script>
+    var map;
+
+    // Дождёмся загрузки API и готовности DOM.
+    ymaps.ready(init);
+
+    function init () {
+        // Создание экземпляра карты и его привязка к контейнеру с
+        // заданным id ("map").
+        map = new ymaps.Map('map', {
+            // При инициализации карты обязательно нужно указать
+            // её центр и коэффициент масштабирования.
+            center: [55.76, 37.64], // Москва
+            zoom: 10
+        }, {
+            searchControlProvider: 'yandex#search'
+        });
+
+
+        adress = 'Москва, ВДНХ';
+        var geocoder = new YMaps.Geocoder(adress, {results: 1, boundedBy: map.getBounds()});
+
+        YMaps.Events.observe(geocoder, geocoder.Events.Load, function () { // декодироание адреса
+            if (this.length()) {
+                geoResult = this.get(0);
+                map.addOverlay(geoResult);
+                map.setBounds(geoResult.getBounds());
+            } else {
+                alert("Ничего не найдено")
+            }
+        });
+
+        alert(geocoder(adress))
+    }
+</script>
+
+</body>
+</html>

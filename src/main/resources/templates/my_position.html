@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/map.css}"/>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+        #map {
+            height: 250px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+
+    <script th:src="@{/js/geolocation.js}"></script>
+</head>
+<body>
+<div th:include="navbar :: navbar"></div>
+
+<div id="map"></div>
+
+<form action="/my_position_rec" method="get">
+    <input type="text" style="display: none" name="coords" id="coords">
+    <div align="center">
+        <input type="submit" class="button black" value="Найти достопримечательности">
+    </div>
+</form>
+
+<div id="close_objects" style="display: none" th:text="${close_objects}"></div>
+
+<div th:include="footer :: footer" class="footer"></div>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJydNcZLAW8dNas-usp7NaJO8dPJ801V8&callback=initMap">
+</script>
+</body>
+</html>

@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <td width="50%">
-            <form action="#by_name">
+            <form action="/name_sight" method="get">
                 <p>
                     <input type="text" name="name" value="Введите название">
                 </p>
@@ -31,17 +31,15 @@
             </form>
         </td>
         <td width="50%">
-            <form action="#close_buildings">
+            <form action="/closest_sights" method="get">
                 <p>
-                    <input type="text" name="area" value="Введите адрес">
+                    <input type="text" name="addresses" value="Введите адрес">
                 </p>
-                <p>
-                    <input class="button black" name="close" value="Найти" type="Найти">
-                </p>
+                    <input class="button black" name="close" value="Найти" type="submit">
+            </form>
                 <p>ИЛИ</p>
-                <p>
-                    <input class="button black" name="close" value="По местоположению" type="Найти по местоположение">
-                </p>
+            <form action="/my_position" method="get">
+                    <input class="button black" name="close" value="По местоположению" type="submit">
             </form>
         </td>
     </tr>

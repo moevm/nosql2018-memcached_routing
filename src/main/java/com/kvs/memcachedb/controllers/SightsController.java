@@ -1,13 +1,101 @@
 package com.kvs.memcachedb.controllers;
 
+import com.google.gson.Gson;
+import com.kvs.memcachedb.entity.Coords;
+import com.kvs.memcachedb.entity.Sight;
+import com.kvs.memcachedb.services.SightService;
+import com.whalin.MemCached.MemCachedClient;
+import javafx.util.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class SightsController {
 
-    @GetMapping("/sight")
-    String getSight(){
+    private final MemCachedClient mcc;
+
+    private final SightService service;
+
+    @Autowired
+    public SightsController(MemCachedClient mcc, SightService service) {
+        this.mcc = mcc;
+        this.service = service;
+    }
+
+    @GetMapping("/name_sight")
+    String getSightByName(@RequestParam("name") String name, Model model) {
+        String coordinates = (String) mcc.get(name);
+
+            StringBuilder coordBuilder = new StringBuilder(coordinates);
+
+            model.addAttribute("coords_lat", coordBuilder.substring(0, coordBuilder.indexOf(":")));
+            model.addAttribute("coords_lng", coordBuilder.substring(coordBuilder.indexOf(":") + 1,
+                    coordBuilder.length()));
+
+            Sight sight = (Sight) mcc.get(coordinates);
+
+            model.addAttribute("name", sight.getObjectName());
+            model.addAttribute("address", sight.getAddress());
+            model.addAttribute("ensemble", sight.getEnsembleName());
+            model.addAttribute("authors", sight.getAuthors());
+            model.addAttribute("base", sight.getBase());
+            model.addAttribute("date", sight.getDate());
+            model.addAttribute("description", sight.getDescription());
+
+            Pair<Pair<String, Double>, Pair<String, Double>> statistic = service.getStatisticSight(name);
+
+            model.addAttribute("closest_object_name", statistic.getKey().getKey());
+            model.addAttribute("furthest_object_name", statistic.getValue().getKey());
+
+
         return "sight";
     }
+
+    @GetMapping("/closest_sights")
+    String getClosestObjects(@RequestParam("addresses") String addresses, Model model) {
+        String[] elements = addresses.split(";");
+
+        ArrayList<Coords> coords = new ArrayList<>();
+
+        for (int i = 0; i < elements.length - 1; i++) {
+            List<Coords> closeObjects =
+                    service.getCloseObjects(elements[i],
+                                            service.getDistance(service.getLatAndLng(elements[i]),
+                                                                service.getLatAndLng(elements[i + 1])));
+            coords.addAll(closeObjects);
+        }
+
+        Gson gson = new Gson();
+
+        model.addAttribute("coords", gson.toJson(coords));
+
+        ArrayList<Coords> way = new ArrayList<>();
+        for (String el : elements) {
+            Pair<Double, Double> latAndLng = service.getLatAndLng(el);
+            way.add(new Coords(latAndLng.getKey(), latAndLng.getValue()));
+        }
+
+        model.addAttribute("way", gson.toJson(way));
+
+        return "sights_way";
+    }
+
+    @GetMapping("/my_position_rec")
+    String getRecommends(@RequestParam("coords") String coords, Model model){
+        List<Coords> closeObjects = service.getCloseObjects(coords, 100.0d);
+
+        Gson gson = new Gson();
+
+        model.addAttribute("close_objects", gson.toJson(closeObjects));
+        return "my_position";
+    }
+
+
 }

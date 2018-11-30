@@ -7,30 +7,24 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/map.css}"/>
-    <title>Sight page</title>
-    <script th:src="@{/js/map.js}"></script>
+    <title>Way</title>
+    <script th:src="@{/js/roadmap.js}"></script>
     <style>
         #map {
             height: 250px; /* The height is 400 pixels */
             width: 100%; /* The width is the width of the web page */
         }
-        table{
+
+        table {
+            margin-top: 10%;
             width: 100%;
         }
-
     </style>
 </head>
 <body>
 
 <div th:include="navbar :: navbar"></div>
 
-<h1 th:text="${name}"></h1>
-<h2 th:text="${ensemble}"></h2>
-<h3 th:text="${date}"></h3>
-<h3 th:text="${authors}"></h3>
-
-<div style="display: none" id="lat" th:text="${coords_lat}"></div>
-<div style="display: none" id="lng" th:text="${coords_lng}"></div>
 
 <table>
     <tr>
@@ -38,28 +32,17 @@
             <div id="map"></div>
         </td>
     </tr>
-    <tr>
-        <td>
-            <br>
-            <strong>Расположение относительно других достопримечательностей</strong>
-            <br>
-            <strong>Самая ближняя:</strong><div th:text="${closest_object_name}"></div>
-            <br>
-            <strong>Самая дальняя:</strong><div th:text="${furthest_object_name}"></div>
-
-        </td>
-    </tr>
 </table>
 
+<div id="way" style="display: none" th:text="${way}"></div>
+<div id="coords" style="display: none" th:text="${coords}"></div>
+
+
 <div th:include="footer :: footer" class="footer"></div>
+
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJydNcZLAW8dNas-usp7NaJO8dPJ801V8&callback=initMap"
         async defer></script>
 
-<script>
-    var lat = document.getElementById('lat').innerHTML;
-    var lng = document.getElementById('lng').innerHTML;
-    newLocation(parseFloat(lat), parseFloat(lng))
-</script>
 </body>
 </html>

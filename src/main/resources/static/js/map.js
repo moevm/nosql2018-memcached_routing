@@ -2,24 +2,35 @@ var geocoder;
 var map;
 var address = "new york city";
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 8,
-        center: {lat: -34.397, lng: 150.644}
+        center: {lat: 0, lng: 0}
     });
     geocoder = new google.maps.Geocoder();
     codeAddress(geocoder, map);
 }
 
-function codeAddress(geocoder, map) {
-    geocoder.geocode({'address': address}, function(results, status) {
-        if (status === 'OK') {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
+function newLocation(newLat,newLng)
+{
+    map.setCenter({
+        lat : newLat,
+        lng : newLng
     });
 }
+
+var Mapss = function geoadres(adress) {
+    var resultlat = ''; var resultlng = '';
+    $.ajax({
+        async: false,
+        dataType: "json",
+        url: 'http://maps.google.com/maps/api/geocode/json?address=' + adress,
+        success: function(data){
+            for (var key in data.results) {
+                resultlat = data.results[key].geometry.location.lat;
+                resultlng = data.results[key].geometry.location.lng;
+            } }
+    });
+    return { lat: resultlat, lng: resultlng}
+};
+
+
