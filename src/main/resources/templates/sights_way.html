@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/map.css}"/>
     <title>Way</title>
-    <script th:src="@{/js/roadmap.js}"></script>
+    <!--<script th:src="@{/js/roadmap.js}"></script>-->
     <style>
         #map {
             height: 250px; /* The height is 400 pixels */
@@ -40,6 +40,42 @@
 
 <div th:include="footer :: footer" class="footer"></div>
 
+<script>
+    var map;
+    var flightPlanCoordinates;
+
+    function initMap() {
+        flightPlanCoordinates = JSON.parse(document.getElementById('way').innerHTML);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: flightPlanCoordinates[0],
+            mapTypeId: 'roadmap'
+        });
+
+        var flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        var myLatLng = JSON.parse(document.getElementById('coords').innerHTML);
+
+
+
+        myLatLng.forEach(function (element) {
+            new google.maps.Marker({
+                position: element,
+                map: map
+            });
+        });
+
+        flightPath.setMap(map);
+    }
+
+</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJydNcZLAW8dNas-usp7NaJO8dPJ801V8&callback=initMap"
         async defer></script>

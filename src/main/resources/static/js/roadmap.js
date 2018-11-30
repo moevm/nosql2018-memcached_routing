@@ -2,13 +2,13 @@ var map;
 var flightPlanCoordinates;
 
 function initMap() {
+    flightPlanCoordinates = JSON.parse(document.getElementById('way').innerHTML);
+
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 3,
-        center: {lat: 0, lng: 0},
+        zoom: 16,
+        center: flightPlanCoordinates[0],
         mapTypeId: 'roadmap'
     });
-
-    flightPlanCoordinates = JSON.parse(document.getElementById('way').innerHTML);
 
     var flightPath = new google.maps.Polyline({
         path: flightPlanCoordinates,
@@ -20,6 +20,8 @@ function initMap() {
 
     var myLatLng = JSON.parse(document.getElementById('coords').innerHTML);
 
+
+
     myLatLng.forEach(function (element) {
         new google.maps.Marker({
             position: element,
@@ -29,12 +31,3 @@ function initMap() {
 
     flightPath.setMap(map);
 }
-
-function newLocation(newLat, newLng) {
-    map.setCenter({
-        lat: newLat,
-        lng: newLng
-    });
-}
-
-newLocation(flightPlanCoordinates[0])

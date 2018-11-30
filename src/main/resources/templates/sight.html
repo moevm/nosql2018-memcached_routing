@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/map.css}"/>
     <title>Sight page</title>
-    <script th:src="@{/js/map.js}"></script>
+    <!--<script th:src="@{/js/map.js}"></script>-->
     <style>
         #map {
             height: 250px; /* The height is 400 pixels */
@@ -53,13 +53,20 @@
 
 <div th:include="footer :: footer" class="footer"></div>
 
+<script>
+    var lat = parseFloat(document.getElementById('lat').innerHTML);
+    var lng = parseFloat(document.getElementById('lng').innerHTML);
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: lat, lng: lng},
+            zoom: 16
+        });
+    }
+</script>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJydNcZLAW8dNas-usp7NaJO8dPJ801V8&callback=initMap"
         async defer></script>
 
-<script>
-    var lat = document.getElementById('lat').innerHTML;
-    var lng = document.getElementById('lng').innerHTML;
-    newLocation(parseFloat(lat), parseFloat(lng))
-</script>
 </body>
 </html>

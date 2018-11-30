@@ -1,10 +1,9 @@
 var geocoder;
 var map;
-var address = "new york city";
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 8,
-        center: {lat: 0, lng: 0}
+        zoom: 16,
+        center: {lat: 50, lng: 50}
     });
     geocoder = new google.maps.Geocoder();
     codeAddress(geocoder, map);
@@ -33,4 +32,9 @@ var Mapss = function geoadres(adress) {
     return { lat: resultlat, lng: resultlng}
 };
 
+var lat = document.getElementById('lat').innerHTML;
+var lng = document.getElementById('lng').innerHTML;
+alert(lat)
+alert(lng)
+newLocation(parseFloat(lat), parseFloat(lng))
 
