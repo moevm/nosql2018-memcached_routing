@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <title>Set dataset</title>
+</head>
+<body>
+
+<div th:include="navbar :: navbar"></div>
+
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file"/><br/><br/>
+        <input class="button black" type="submit" value="Submit"/>
+    </form>
+
+<div th:include="footer :: footer" class="footer"></div>
+
+</body>
+</html>

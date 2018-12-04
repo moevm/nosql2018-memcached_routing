@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.kvs.memcachedb.entity.Sight;
 import com.kvs.memcachedb.utils.OpenStreetMapUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -27,10 +28,9 @@ import static org.junit.Assert.*;
 
 public class MainControllerTest {
 
+    @Ignore
     @Test
     public void loadDataset() throws Exception {
-
-
         ArrayList<Sight> sights = new ArrayList<>();
         CSVReader reader = new CSVReader(new FileReader("src/main/resources/Data.csv"), ',' , '"' , 1);
 
@@ -72,9 +72,6 @@ public class MainControllerTest {
                 ex.printStackTrace();
             }
         }
-
-
-
     }
 
 }
