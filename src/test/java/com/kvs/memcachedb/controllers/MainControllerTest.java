@@ -32,45 +32,45 @@ public class MainControllerTest {
     @Test
     public void loadDataset() throws Exception {
         ArrayList<Sight> sights = new ArrayList<>();
-        CSVReader reader = new CSVReader(new FileReader("src/main/resources/Data.csv"), ',' , '"' , 1);
+        CSVReader reader = new CSVReader(new FileReader("src/main/resources/Data.csv"), ',', '"', 1);
 
         String[] nextLine;
         Map<String, Double> coords;
         int i = 0;
         StringBuilder result = new StringBuilder("");
-        while ((nextLine = reader.readNext()) != null) {
-            try (FileWriter writer = new FileWriter(new File("C:\\Users\\Aleksei_Kruglik\\Desktop\\study\\nosql\\nosql2018-memcached_routing\\src\\main\\resources\\templates\\coords"))){
-            Sight sight = new Sight();
-            sight.setEnsembleName(nextLine[1]);
-            sight.setObjectName(nextLine[2]);
-            sight.setDate(nextLine[3]);
-            sight.setAuthors(nextLine[4]);
-            sight.setAddress(nextLine[5]);
-            sight.setDistrict(nextLine[6]);
-            sight.setBase(nextLine[8]);
-            sight.setDescription(nextLine[9]);
-            sights.add(sight);
-            String address = "Санкт-Петербург " + sight.getAddress();
+        while ((nextLine = reader.readNext()) != null && i < 100) {
+            if (i >= 10) {
+                try (FileWriter writer = new FileWriter(new File("C:\\Users\\Aleksei_Kruglik\\Desktop\\study\\nosql\\nosql2018-memcached_routing\\src\\main\\resources\\coords"), true)) {
+                    Sight sight = new Sight();
+                    sight.setEnsembleName(nextLine[1]);
+                    sight.setObjectName(nextLine[2]);
+                    sight.setDate(nextLine[3]);
+                    sight.setAuthors(nextLine[4]);
+                    sight.setAddress(nextLine[5]);
+                    sight.setDistrict(nextLine[6]);
+                    sight.setBase(nextLine[8]);
+                    sight.setDescription(nextLine[9]);
+                    sights.add(sight);
+                    String address = "Санкт-Петербург " + sight.getAddress();
 
-            Thread.sleep(1500);
+                    coords = OpenStreetMapUtils.getInstance().getCoordinates(address);
+                    result = new StringBuilder("");
 
-            coords = OpenStreetMapUtils.getInstance().getCoordinates(address);
-                result = new StringBuilder("");
+                    result.append(i + 1)
+                            .append(":")
+                            .append(sight.getAddress())
+                            .append(":")
+                            .append(coords.get("lat"))
+                            .append(":")
+                            .append(coords.get("lon"))
+                            .append("\n");
 
-                result.append(i + 1)
-                      .append(":")
-                      .append(sight.getAddress())
-                      .append(":")
-                      .append(coords.get("lat"))
-                      .append(":")
-                      .append(coords.get("lon"))
-                      .append("\n");
-
-            ++i;
-                writer.write(result.toString());
-            } catch (Exception ex){
-                ex.printStackTrace();
+                    writer.write(result.toString());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
+            ++i;
         }
     }
 

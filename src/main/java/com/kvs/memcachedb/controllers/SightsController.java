@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -31,9 +30,10 @@ public class SightsController {
 
     @GetMapping("/name_sight")
     String getSightByName(@RequestParam("name") String name, Model model) {
-        String coordinates = (String) mcc.get(name);
 
-            StringBuilder coordBuilder = new StringBuilder(coordinates);
+        String coordinates = service.getCoordsByName(name);
+
+        StringBuilder coordBuilder = new StringBuilder(coordinates);
 
             model.addAttribute("coords_lat", coordBuilder.substring(0, coordBuilder.indexOf(":")));
             model.addAttribute("coords_lng", coordBuilder.substring(coordBuilder.indexOf(":") + 1,

@@ -56,7 +56,7 @@ public class OpenStreetMapUtils {
         return response.toString();
     }
 
-    public Map<String, Double> getCoordinates(String address) {
+    public Map<String, Double> getCoordinates(String address) throws InterruptedException {
         Map<String, Double> res;
         StringBuffer query;
         String[] split = address.split(" ");
@@ -77,6 +77,9 @@ public class OpenStreetMapUtils {
                 query.append("+");
             }
         }
+
+        Thread.sleep(2000);
+
         query.append("&format=json&addressdetails=1");
 
         try {

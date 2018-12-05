@@ -33,10 +33,11 @@ public class MemcacheConfig {
     @Bean
     public List<String> allSights() throws IOException {
         ArrayList<String> result = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/sight_names.txt")))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/coords")))){
             String line = null;
             while ((line = reader.readLine()) != null){
-                result.add(line);
+                String[] split = line.split(":");
+                result.add(split[2] + ":" + split[3]);
             }
         }
 

@@ -1,10 +1,10 @@
 package com.kvs.memcachedb.controllers;
 
 import au.com.bytecode.opencsv.CSVReader;
-import com.google.gson.Gson;
 import com.kvs.memcachedb.entity.Sight;
 import com.kvs.memcachedb.utils.OpenStreetMapUtils;
 import com.whalin.MemCached.MemCachedClient;
+import org.apache.commons.io.input.CharSequenceReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Controller
 public class MainController {
@@ -79,28 +80,43 @@ public class MainController {
     @PostMapping("/upload")
     String setDatabase(MultipartFile file) throws IOException {
 
-        InputStream inputStream = file.getInputStream();
-        Reader inputStreamReader = new InputStreamReader(inputStream);
+        Reader inputStreamReader = new CharSequenceReader(new String(file.getBytes(), UTF_8));
         CSVReader reader = new CSVReader(inputStreamReader, ',' , '"' , 1);
 
         String[] nextLine;
-        Map<String, Double> coords;
+        Map<String, Double> coords = null;
         while ((nextLine = reader.readNext()) != null) {
             Sight sight = new Sight();
+            if (nextLine.length > 2)
             sight.setEnsembleName(nextLine[1]);
+            if (nextLine.length > 3)
             sight.setObjectName(nextLine[2]);
+            if (nextLine.length > 4)
             sight.setDate(nextLine[3]);
+            if (nextLine.length > 5)
             sight.setAuthors(nextLine[4]);
+            if (nextLine.length > 6)
             sight.setAddress(nextLine[5]);
+            if (nextLine.length > 7)
             sight.setDistrict(nextLine[6]);
+            if (nextLine.length > 8)
             sight.setBase(nextLine[8]);
+            if (nextLine.length > 9)
             sight.setDescription(nextLine[9]);
 
             String address = "Санкт-Петербург " + sight.getAddress();
 
-            coords = OpenStreetMapUtils.getInstance().getCoordinates(address);
+            try {
+                coords = OpenStreetMapUtils.getInstance().getCoordinates(address);
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
 
-            mcc.set(coords.get("lat").toString() + ":" + coords.get("lon").toString(), sight);
+            if (coords != null && coords.get("lat") != null &&
+                coords.get("lon") != null &&
+                !coords.get("lat").toString().equals("null")) {
+                mcc.set(coords.get("lat").toString() + ":" + coords.get("lon").toString(), sight);
+            }
 
         }
         return "main_page";
@@ -126,20 +142,5 @@ public class MainController {
     String getMyPositionPage(Model model){
         model.addAttribute("close_objects", "");
         return "my_position";
-    }
-
-    @GetMapping("/change_addresses")
-    String change_address(Model model) throws IOException {
-        CSVReader reader = new CSVReader(new FileReader("src/main/resources/Data.csv"), ',' , '"' , 1);
-        ArrayList<String> addresses = new ArrayList<>();
-
-        String[] nextLine;
-        while ((nextLine = reader.readNext()) != null) {
-            addresses.add(nextLine[5]);
-        }
-        Gson gson = new Gson();
-        String jsonAddresses = gson.toJson(addresses);
-        model.addAttribute("addresses", jsonAddresses);
-        return "change_addresses";
     }
 }
