@@ -52,7 +52,32 @@ public class SightService {
         return coords;
     }
 
-    public Pair<Pair<String, Double>, Pair<String, Double>> getStatisticSight(String currentPoint) {
+    public List<List<String>> getAllDataset() {
+        List<List<String>> dataset = new ArrayList<>();
+
+        for (String objCoords : allSights) {
+            if (!objCoords.contains("null")) {
+                Sight sight = (Sight) mcc.get(objCoords);
+                if (sight != null) {
+                    List<String> objects = new ArrayList<>();
+                    objects.add(sight.getEnsembleName());
+                    objects.add(sight.getObjectName());
+                    objects.add(sight.getDate());
+                    objects.add(sight.getAuthors());
+                    objects.add(sight.getAddress());
+                    objects.add(sight.getDistrict());
+                    objects.add(sight.getBase());
+                    objects.add(sight.getDescription());
+                    dataset.add(objects);
+                }
+            }
+        }
+
+        return dataset;
+    }
+
+
+    public Pair<Pair<String, Double>, Pair<String, Double>> getStatisticSight(String currentPoint, String coordinates) {
         Pair<Double, Double> currentLatAndLng = getLatAndLng(getCoordsByName(currentPoint));
         double min = Double.MAX_VALUE;
         String closestObjectCoords = "";
@@ -60,7 +85,7 @@ public class SightService {
         String furthersObjectCoords = "";
 
         for (String coords : allSights) {
-            if (!coords.equals(getCoordsByName(currentPoint)) &&
+            if (!coords.equals(coordinates) &&
                 !coords.contains("null") &&
                 mcc.get(coords) != null) {
                 Pair<Double, Double> latAndLng = getLatAndLng(coords);

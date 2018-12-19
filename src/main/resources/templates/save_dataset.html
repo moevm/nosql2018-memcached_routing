@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <title>Get dataset</title>
+</head>
+
+<body>
+<div th:include="navbar :: navbar"></div>
+<div style="display: none" id="dataset" th:text="${dataset}"></div>
+
+<script>
+
+    var data = JSON.parse(document.getElementById('dataset').innerHTML);
+
+
+    function download_csv() {
+        var csv = 'name,name_object,date,author,address,district,protection_category,base,note\n';
+        data.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+        });
+
+        console.log(csv);
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = 'dataset.csv';
+        hiddenElement.click();
+    }
+</script>
+
+<button onclick="download_csv()">Download CSV</button>
+
+<div th:include="footer :: footer" class="footer"></div>
+
+</body>
+</html>

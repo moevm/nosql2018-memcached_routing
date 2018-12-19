@@ -34,9 +34,17 @@
     </tr>
 </table>
 
+<div>
 <div id="way" style="display: none" th:text="${way}"></div>
 <div id="coords" style="display: none" th:text="${coords}"></div>
 
+<form action="/object_info_by_coords" method="get">
+    <input type="text" style="display: none" name="sight_coords" id="sight_coords">
+    <div align="center">
+        <input type="submit" class="button black" value="Узнать информацию">
+    </div>
+</form>
+</div>
 
 <div th:include="footer :: footer" class="footer"></div>
 
@@ -66,9 +74,15 @@
 
 
         myLatLng.forEach(function (element) {
-            new google.maps.Marker({
+            var marker = new google.maps.Marker({
                 position: element,
                 map: map
+            });
+
+            marker.addListener('click', function() {
+                map.setZoom(15);
+                map.setCenter(marker.getPosition());
+                document.getElementById("sight_coords").value = marker.getPosition().toString();
             });
         });
 

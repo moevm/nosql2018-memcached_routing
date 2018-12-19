@@ -37,9 +37,15 @@ function initMap() {
     var myLatLng = JSON.parse(document.getElementById('close_objects').innerHTML);
 
     myLatLng.forEach(function (element) {
-        new google.maps.Marker({
+        var marker = new google.maps.Marker({
             position: element,
             map: map
+        });
+
+        marker.addListener('click', function() {
+            map.setZoom(15);
+            map.setCenter(marker.getPosition());
+            document.getElementById("sight_coords").value = marker.getPosition().toString();
         });
     });
 }

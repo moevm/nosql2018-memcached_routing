@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+    <title>Main Page</title>
+</head>
+<body>
+
+<div th:include="navbar :: navbar"></div>
+<div align="center" >
+    <div class="about">
+        <h1 style="color: red">Ошибка</h1>
+        <p>
+            Скорее всего проблемы с апи карт для данной точки.
+        </p>
+    </div>
+</div>
+
+<div th:include="footer :: footer" class="footer"></div>
+
+</body>
+</html>

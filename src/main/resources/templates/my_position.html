@@ -24,12 +24,20 @@
 
 <div id="map"></div>
 
-<form action="/my_position_rec" method="get">
-    <input type="text" style="display: none" name="coords" id="coords">
-    <div align="center">
-        <input type="submit" class="button black" value="Найти достопримечательности">
-    </div>
-</form>
+<div>
+    <form action="/my_position_rec" method="get">
+        <input type="text" style="display: none" name="coords" id="coords">
+        <div align="center">
+            <input type="submit" class="button black" value="Найти достопримечательности">
+        </div>
+    </form>
+    <form action="/object_info_by_coords" method="get">
+        <input type="text" style="display: none" name="sight_coords" id="sight_coords">
+        <div align="center">
+            <input type="submit" class="button black" value="Узнать информацию">
+        </div>
+    </form>
+</div>
 
 <div id="close_objects" style="display: none" th:text="${close_objects}"></div>
 

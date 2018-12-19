@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +51,26 @@ public class SightsController {
             model.addAttribute("date", sight.getDate());
             model.addAttribute("description", sight.getDescription());
 
-            Pair<Pair<String, Double>, Pair<String, Double>> statistic = service.getStatisticSight(name);
+            Pair<Pair<String, Double>, Pair<String, Double>> statistic = service.getStatisticSight(name, coordinates);
 
             model.addAttribute("closest_object_name", statistic.getKey().getKey());
             model.addAttribute("furthest_object_name", statistic.getValue().getKey());
 
 
         return "sight";
+    }
+
+    @GetMapping("/object_info_by_coords")
+    String getSightByCoords(@RequestParam("sight_coords") String coords, Model model, RedirectAttributes redirectAttributes) {
+
+        String[] split = coords.split("(, )");
+
+        String coordsView = new BigDecimal(split[0].substring(1)).setScale(7, BigDecimal.ROUND_FLOOR).toString()
+                + ":" + new BigDecimal(split[1].substring(0, split[1].length() - 1)).setScale(7, BigDecimal.ROUND_FLOOR).toString();
+
+
+        redirectAttributes.addAttribute("name", ((Sight)mcc.get(coordsView)).getObjectName());
+        return "redirect:name_sight";
     }
 
     @GetMapping("/closest_sights")
@@ -97,5 +112,11 @@ public class SightsController {
         return "my_position";
     }
 
-
+    @GetMapping("/export_dataset")
+    String getExportPage(Model model){
+        List<List<String>> allDataset = service.getAllDataset();
+        String s = new Gson().toJson(allDataset);
+        model.addAttribute("dataset", s);
+        return "save_dataset";
+    }
 }

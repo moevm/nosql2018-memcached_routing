@@ -38,8 +38,8 @@ public class MainControllerTest {
         Map<String, Double> coords;
         int i = 0;
         StringBuilder result = new StringBuilder("");
-        while ((nextLine = reader.readNext()) != null && i < 100) {
-            if (i >= 10) {
+        while ((nextLine = reader.readNext()) != null && i < 500) {
+            if (i >= 100) {
                 try (FileWriter writer = new FileWriter(new File("C:\\Users\\Aleksei_Kruglik\\Desktop\\study\\nosql\\nosql2018-memcached_routing\\src\\main\\resources\\coords"), true)) {
                     Sight sight = new Sight();
                     sight.setEnsembleName(nextLine[1]);

@@ -122,7 +122,6 @@ public class MainController {
         return "main_page";
     }
 
-
     @GetMapping("/set_dataset")
     String getUploadPage(){
         return "set_dataset";
